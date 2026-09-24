@@ -3,7 +3,18 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="description" content="Unofficial student guide to Harvard graduate and professional dining cafes and top-rated local restaurants, grouped by walking time from the Harvard Kennedy School.">
+<meta name="description" content="Unofficial student guide to Harvard graduate and professional dining cafés and top-rated local restaurants, grouped by walking time from the Harvard Kennedy School.">
+<!-- Link preview. Once the site is live, replace "og-image.png" below with the full address,
+     e.g. https://yourusername.github.io/hks-eats/og-image.png, and set og:url to your site address. -->
+<meta property="og:type" content="website">
+<meta property="og:title" content="Where to eat near HKS">
+<meta property="og:description" content="12 Harvard dining cafés and 52 local spots rated 4.0★+, grouped by walking time from the Kennedy School.">
+<meta property="og:image" content="og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Cartoon squirrel eating a slice of pizza next to the words Where to eat, in minutes from HKS">
+<meta property="og:url" content="">
+<meta name="twitter:card" content="summary_large_image">
 <title>Eating Out from HKS</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -63,6 +74,13 @@ select,input[type=time]{font:inherit;font-size:14px;padding:6px 8px;border:1px s
 .chip{font:inherit;font-size:13px;font-weight:600;padding:6px 12px;border-radius:999px;border:1px solid var(--line);background:var(--surface);color:var(--ink);cursor:pointer}
 .chip[aria-pressed="true"]{background:var(--river);border-color:var(--river);color:var(--bg)}
 .btn-now{font:inherit;font-size:13px;font-weight:600;border:0;background:none;color:var(--river);cursor:pointer;text-decoration:underline;padding:4px}
+.search-row{display:flex;flex-wrap:wrap;gap:10px;align-items:center;width:100%}
+.search{flex:1 1 320px;display:flex;align-items:center;gap:8px;background:var(--surface);border:1.5px solid var(--line);border-radius:10px;padding:0 12px;color:var(--muted)}
+.search:focus-within{border-color:var(--river)}
+.search input{flex:1;min-width:0;border:0;background:none;font:inherit;font-size:15px;color:var(--ink);padding:10px 0;outline:none}
+.feedback{font-size:13px;font-weight:700;color:var(--brick);border:1.5px solid var(--brick);border-radius:999px;padding:7px 14px;text-decoration:none;white-space:nowrap}
+.feedback:hover{background:var(--brick-soft)}
+mark{background:var(--soon-soft);color:inherit;border-radius:3px;padding:0 1px}
 .ctl-row{display:flex;flex-wrap:wrap;gap:8px;align-items:center;width:100%}
 .ctl-label{font-size:13px;color:var(--muted);font-weight:600;align-self:center}
 .seg{display:inline-flex;border:1px solid var(--line);border-radius:999px;overflow:hidden;background:var(--surface)}
@@ -135,6 +153,13 @@ select,input[type=time]{font:inherit;font-size:14px;padding:6px 8px;border:1px s
   </section>
 
   <div class="controls" role="region" aria-label="Filters">
+    <div class="search-row">
+      <label class="search" for="q">
+        <svg viewBox="0 0 20 20" width="18" height="18" aria-hidden="true"><circle cx="8.5" cy="8.5" r="6" fill="none" stroke="currentColor" stroke-width="2"/><line x1="13" y1="13" x2="18" y2="18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+        <input id="q" type="search" placeholder="Search places, food or streets: ramen, tacos, Brattle…" autocomplete="off">
+      </label>
+      <a class="feedback" id="feedback-top" href="#" target="_blank" rel="noopener" hidden>Suggest a spot or report an error</a>
+    </div>
     <div class="when">
       <label for="day">Show hours for</label>
       <select id="day">
@@ -170,6 +195,7 @@ select,input[type=time]{font:inherit;font-size:14px;padding:6px 8px;border:1px s
   <main id="tiers"></main>
 
   <footer class="fine">
+    <p id="feedback-foot" hidden><strong>Missing a favorite or spot a mistake?</strong> <a id="feedback-foot-link" href="#" target="_blank" rel="noopener">Suggest a spot or report an error</a>. It takes a minute and helps keep this guide current.</p>
     <p><strong>Paying:</strong> Harvard Dining says all its cafés accept cash, Mastercard, Visa, American Express, and BoardPlus. Several also list the GradPlus declining-balance plan for graduate and professional students, tagged above.</p>
     <p><strong>Closures:</strong> Most cafés close for Harvard's winter break, academic breaks, and summer; student-run spots (Gato Rojo, Lamont) also close for reading and exam periods. Hours are the academic-year schedule and can change, so check the café's page before a special trip.</p>
     <p><strong>Local restaurants:</strong> Included if they had a Google Maps rating of 4.0 stars or higher and at least 100 reviews when checked on September 24, 2026. The review minimum screens out new places with only a handful of ratings. Ratings, prices and hours change, so tap a restaurant to check Google Maps before you go. Their walking times are estimates.</p>
@@ -178,6 +204,9 @@ select,input[type=time]{font:inherit;font-size:14px;padding:6px 8px;border:1px s
 </div>
 
 <script>
+// Paste your Google Form link here. The feedback buttons stay hidden until it is set.
+const FEEDBACK_URL = "https://docs.google.com/forms/d/e/1FAIpQLSf04XRDtJFeL9SJ-OIqaSZgFmkmKl7KGaJa0A-zSpESLl4AjA/viewform";
+
 const BASE = "https://www.dining.harvard.edu";
 // Hours: per weekday (0=Sun) list of [openMin, closeMin]
 const MTh = (o,c)=>({1:[[o,c]],2:[[o,c]],3:[[o,c]],4:[[o,c]]});
@@ -331,10 +360,21 @@ const TAGLABEL ={breakfast:"Breakfast",lunch:"Lunch",dinner:"Dinner",coffee:"Cof
 
 const filters = new Set();
 let src="all", cheapOnly=false;
+const $q=document.getElementById("q");
+const norm = t => String(t).toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/&amp;/g,"&").replace(/[’']/g,"");
+const qTerms = () => norm($q.value).split(/\s+/).filter(Boolean).map(w=>w.length>3&&w.endsWith("s")&&!w.endsWith("ss")?w.slice(0,-1):w);
+const SYN = {mexican:"taco burrito taqueria quesadilla",asian:"noodle sushi chinese japanese thai korean dumpling",sweets:"dessert gelato ice cream treat",cafe:"coffee latte espresso brunch breakfast bakery pastry",healthy:"salad bowl vegetarian vegan healthy",pizza:"slice italian",american:"burger bar pub fries",indian:"curry dosa"};
+const hay = o => norm(Object.values(o).filter(v=>typeof v==="string"||Array.isArray(v)).flat().map(v=>TAGLABEL[v]||v).join(" ")+" "+(CUISINES[o.cuisine]||"")+" "+(SYN[o.cuisine]||""));
+const matches = o => { const t=qTerms(); if(!t.length) return true; const h=hay(o); return t.every(w=>h.includes(w)); };
+if(FEEDBACK_URL){
+  ["feedback-top","feedback-foot-link"].forEach(id=>document.getElementById(id).href=FEEDBACK_URL);
+  document.getElementById("feedback-top").hidden=false; document.getElementById("feedback-foot").hidden=false;
+}
 const $cuisine=document.getElementById("cuisine"), $minr=document.getElementById("minrating");
 $cuisine.innerHTML=Object.entries(CUISINES).map(([k,v])=>`<option value="${k}">${v}</option>`).join("");
 const gmaps = e => "https://www.google.com/maps/search/?api=1&query="+encodeURIComponent(e.name+" "+e.addr.replace(/\s*\(.*\)/,"")+" Cambridge MA");
 function eatPasses(e){
+  if(!matches(e)) return false;
   if($cuisine.value!=="all" && e.cuisine!==$cuisine.value) return false;
   if(e.rating < +$minr.value) return false;
   if(cheapOnly && !cheapPrice(e.price)) return false;
@@ -382,7 +422,7 @@ function render(){
   const out = TIERS.map(t=>{
     const cards = SPOTS.filter(s=>s.tier===t.id).map(s=>{
       const st=status(s,d,m); if(st.cls!=="closed") openCount++;
-      if(src==="eats" || !passes(s,st)) return "";
+      if(src==="eats" || !passes(s,st) || !matches(s)) return "";
       shown++;
       return `<article class="card">
         <div class="card-top"><div><h3>${s.name}</h3><p class="where">${s.where}</p></div><span class="walk">${s.walkTxt}</span></div>
@@ -411,7 +451,7 @@ function render(){
   }).join("");
   document.getElementById("tiers").innerHTML = out;
   const dayName=$day.options[$day.selectedIndex].text;
-  document.getElementById("summary").textContent = `${openCount} of ${SPOTS.length} Harvard cafés serving ${dayName} at ${fmt(m)} · showing ${shown} cafés and ${eatShown} restaurants`;
+  document.getElementById("summary").textContent = (shown+eatShown===0 && $q.value.trim() ? `No matches for "${$q.value.trim()}". Try a cuisine like ramen or pizza, or a street name. · ` : "") + `${openCount} of ${SPOTS.length} Harvard cafés serving ${dayName} at ${fmt(m)} · showing ${shown} cafés and ${eatShown} restaurants`;
   drawScale(d,m);
 }
 
@@ -446,7 +486,8 @@ document.querySelector(".seg").addEventListener("click",e=>{
   document.querySelectorAll(".seg button").forEach(x=>x.setAttribute("aria-pressed",x===b)); render();
 });
 document.getElementById("cheap").addEventListener("click",e=>{cheapOnly=!cheapOnly;e.currentTarget.setAttribute("aria-pressed",cheapOnly);render();});
-$cuisine.addEventListener("change",render); $minr.addEventListener("change",render);
+$cuisine.addEventListener("change",render);
+let qTimer; $q.addEventListener("input",()=>{clearTimeout(qTimer);qTimer=setTimeout(render,120);}); $minr.addEventListener("change",render);
 $day.addEventListener("change",render); $time.addEventListener("change",render);
 document.getElementById("now").addEventListener("click",()=>{setNow();render();});
 setNow(); render();
