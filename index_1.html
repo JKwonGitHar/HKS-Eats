@@ -1,0 +1,455 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Unofficial student guide to Harvard graduate and professional dining cafes and top-rated local restaurants, grouped by walking time from the Harvard Kennedy School.">
+<title>Eating Out from HKS</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Young+Serif&family=Figtree:wght@400;500;600;700&family=JetBrains+Mono:wght@500&display=swap">
+<style>
+:root{
+  --bg:#F2F5F3; --surface:#FFFFFF; --ink:#18221E; --muted:#5E6A64; --line:#D5DDD8;
+  --river:#2C6A56; --river-soft:#DCEAE4; --brick:#B24E2C; --brick-soft:#F5E1D8;
+  --open:#2C7A3F; --open-soft:#DDF0E0; --closed:#8A948F; --soon:#A66A00; --soon-soft:#F6EACB;
+  --display:"Young Serif", Georgia, "Times New Roman", serif;
+  --body:"Figtree", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --mono:"JetBrains Mono", ui-monospace, Menlo, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+    --bg:#111916; --surface:#18221E; --ink:#E6EDE9; --muted:#9AA8A1; --line:#2A3833;
+    --river:#6DBA9E; --river-soft:#1E3A31; --brick:#E48763; --brick-soft:#3D2319;
+    --open:#6FCB85; --open-soft:#1C3824; --closed:#77837D; --soon:#E0B04E; --soon-soft:#3A2F14;
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --bg:#111916; --surface:#18221E; --ink:#E6EDE9; --muted:#9AA8A1; --line:#2A3833;
+  --river:#6DBA9E; --river-soft:#1E3A31; --brick:#E48763; --brick-soft:#3D2319;
+  --open:#6FCB85; --open-soft:#1C3824; --closed:#77837D; --soon:#E0B04E; --soon-soft:#3A2F14;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--body);font-size:15px;line-height:1.55;padding-inline:16px;padding-block:0 56px}
+.wrap{max-width:980px;margin:0 auto}
+a{color:var(--river)}
+a:focus-visible,button:focus-visible,select:focus-visible{outline:2px solid var(--brick);outline-offset:2px}
+
+header{padding-block:40px 20px;display:grid;gap:10px}
+.eyebrow{font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--brick);font-weight:700}
+h1{font-family:var(--display);font-weight:400;font-size:clamp(32px,6vw,52px);line-height:1.05;margin:0;text-wrap:balance}
+.lede{max-width:62ch;color:var(--muted);margin:0;font-size:16px}
+
+/* Walk scale */
+.scale{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:18px 18px 12px;margin-block:18px 8px}
+.scale h2{font-size:13px;letter-spacing:.08em;text-transform:uppercase;margin:0 0 4px;color:var(--muted);font-weight:600}
+.scale-scroll{overflow-x:auto}
+.scale svg{display:block;min-width:620px;width:100%;height:auto}
+.scale text{font-family:var(--body)}
+.scale .axis{stroke:var(--line)}
+.scale .tick{fill:var(--muted);font-size:11px;font-family:var(--mono)}
+.scale .band{font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase}
+.scale .lbl{fill:var(--ink);font-size:11.5px}
+.scale-note{font-size:12px;color:var(--muted);margin:6px 0 0}
+
+/* Controls */
+.controls{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);padding-block:12px;border-bottom:1px solid var(--line);display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.when{display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+.when label{font-size:13px;color:var(--muted);font-weight:600}
+select,input[type=time]{font:inherit;font-size:14px;padding:6px 8px;border:1px solid var(--line);border-radius:8px;background:var(--surface);color:var(--ink)}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{font:inherit;font-size:13px;font-weight:600;padding:6px 12px;border-radius:999px;border:1px solid var(--line);background:var(--surface);color:var(--ink);cursor:pointer}
+.chip[aria-pressed="true"]{background:var(--river);border-color:var(--river);color:var(--bg)}
+.btn-now{font:inherit;font-size:13px;font-weight:600;border:0;background:none;color:var(--river);cursor:pointer;text-decoration:underline;padding:4px}
+.ctl-row{display:flex;flex-wrap:wrap;gap:8px;align-items:center;width:100%}
+.ctl-label{font-size:13px;color:var(--muted);font-weight:600;align-self:center}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:999px;overflow:hidden;background:var(--surface)}
+.seg button{font:inherit;font-size:13px;font-weight:600;padding:6px 12px;border:0;background:none;color:var(--ink);cursor:pointer}
+.seg button+button{border-left:1px solid var(--line)}
+.seg button[aria-pressed="true"]{background:var(--ink);color:var(--bg)}
+.eats-head{display:flex;justify-content:space-between;align-items:baseline;gap:8px;flex-wrap:wrap;margin-top:4px}
+.eats-head h3{margin:0;font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:700}
+.eats-head span{font-size:12px;color:var(--muted)}
+.eats{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:0 20px;border-top:1px solid var(--line)}
+.eat{display:grid;grid-template-columns:1fr auto;gap:2px 10px;padding:10px 2px;border-bottom:1px solid var(--line);text-decoration:none;color:var(--ink)}
+.eat:hover .eat-name{color:var(--river);text-decoration:underline}
+.eat-name{font-weight:700;font-size:15px}
+.eat-meta{grid-column:1;font-size:13px;color:var(--muted)}
+.eat-right{grid-row:1 / span 2;grid-column:2;text-align:right;display:grid;gap:2px;align-content:start}
+.stars{font-family:var(--mono);font-size:13px;color:var(--brick);white-space:nowrap}
+.revs{font-size:11.5px;color:var(--muted);font-variant-numeric:tabular-nums;white-space:nowrap}
+.eat-walk{font-family:var(--mono);font-size:11.5px;color:var(--river)}
+.summary{font-size:13px;color:var(--muted);width:100%;margin:0}
+
+/* Tiers */
+.tier{margin-top:34px;display:grid;gap:14px}
+.tier-head{display:grid;grid-template-columns:auto 1fr;gap:4px 14px;align-items:baseline;border-bottom:2px solid var(--ink);padding-bottom:8px}
+.tier-time{font-family:var(--mono);font-size:13px;color:var(--brick);grid-row:span 2;align-self:center;background:var(--brick-soft);padding:6px 10px;border-radius:8px;white-space:nowrap;min-width:84px;text-align:center}
+.tier h2{font-family:var(--display);font-weight:400;font-size:26px;margin:0;line-height:1.15}
+.tier-sub{margin:0;color:var(--muted);font-size:14px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:14px}
+.empty{color:var(--muted);font-size:14px;margin:0}
+
+.card{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:16px;display:flex;flex-direction:column;gap:10px}
+.card-top{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}
+.card h3{margin:0;font-size:18px;line-height:1.25;font-weight:700}
+.where{font-size:13px;color:var(--muted);margin:2px 0 0}
+.walk{font-family:var(--mono);font-size:12px;white-space:nowrap;color:var(--river);background:var(--river-soft);padding:3px 8px;border-radius:6px}
+.status{display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:600;padding:3px 10px;border-radius:999px;width:fit-content}
+.status::before{content:"";width:7px;height:7px;border-radius:50%;background:currentColor}
+.status.open{color:var(--open);background:var(--open-soft)}
+.status.soon{color:var(--soon);background:var(--soon-soft)}
+.status.closed{color:var(--closed);background:transparent;border:1px solid var(--line)}
+.blurb{margin:0;font-size:14px}
+.hours{width:100%;border-collapse:collapse;font-size:13px}
+.hours td{padding:3px 0;border-top:1px dashed var(--line);vertical-align:top}
+.hours td:first-child{color:var(--muted);width:44%;padding-right:8px}
+.hours td:last-child{font-variant-numeric:tabular-nums}
+.tags{display:flex;flex-wrap:wrap;gap:5px}
+.tag{font-size:11.5px;font-weight:600;padding:2px 8px;border-radius:5px;background:var(--bg);color:var(--muted);border:1px solid var(--line)}
+.tag.gp{color:var(--river);border-color:var(--river)}
+.note{font-size:12.5px;color:var(--muted);margin:0}
+.card-foot{margin-top:auto;display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;font-size:13px}
+
+.fine{margin-top:44px;padding-top:16px;border-top:1px solid var(--line);font-size:13px;color:var(--muted);max-width:75ch;display:grid;gap:8px}
+.fine p{margin:0}
+@media (max-width:480px){ .tier h2{font-size:22px} .grid{grid-template-columns:1fr} }
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <header>
+    <div class="eyebrow">Unofficial student guide · Starting point: 79 JFK Street</div>
+    <h1>Where to eat, counted in minutes from the Kennedy School</h1>
+    <p class="lede">Every Harvard graduate &amp; professional dining café, plus 52 local restaurants rated 4.0 stars or higher on Google, grouped from the ones next door to the ones worth a trip. Pick a day and time to see which Harvard cafés are serving.</p>
+  </header>
+
+  <section class="scale" aria-label="Walking time from HKS">
+    <h2>Harvard Dining cafés by walking time</h2>
+    <div class="scale-scroll"><svg id="scale" viewBox="0 0 900 150" role="img" aria-label="Chart of approximate walking minutes from HKS to each café"></svg></div>
+    <p class="scale-note">Approximate walking times at an average pace. Sebastian's is in Longwood; take transit or a shuttle.</p>
+  </section>
+
+  <div class="controls" role="region" aria-label="Filters">
+    <div class="when">
+      <label for="day">Show hours for</label>
+      <select id="day">
+        <option value="0">Sunday</option><option value="1">Monday</option><option value="2">Tuesday</option>
+        <option value="3">Wednesday</option><option value="4">Thursday</option><option value="5">Friday</option><option value="6">Saturday</option>
+      </select>
+      <input id="time" type="time" step="900" aria-label="Time">
+      <button class="btn-now" id="now" type="button">Reset to now</button>
+    </div>
+    <div class="chips" id="chips">
+      <span class="ctl-label">Harvard cafés:</span>
+      <button class="chip" type="button" data-f="open" aria-pressed="false">Open at this time</button>
+      <button class="chip" type="button" data-f="breakfast" aria-pressed="false">Breakfast</button>
+      <button class="chip" type="button" data-f="dinner" aria-pressed="false">Dinner &amp; evening</button>
+      <button class="chip" type="button" data-f="coffee" aria-pressed="false">Coffee bar</button>
+      <button class="chip" type="button" data-f="gradplus" aria-pressed="false">Takes GradPlus</button>
+    </div>
+    <div class="ctl-row">
+      <div class="seg" role="group" aria-label="Show">
+        <button type="button" data-src="all" aria-pressed="true">Everything</button>
+        <button type="button" data-src="huds" aria-pressed="false">Harvard Dining</button>
+        <button type="button" data-src="eats" aria-pressed="false">Local restaurants</button>
+      </div>
+      <select id="cuisine" aria-label="Cuisine"></select>
+      <select id="minrating" aria-label="Minimum Google rating">
+        <option value="4.0">4.0★ and up</option><option value="4.3">4.3★ and up</option><option value="4.5">4.5★ and up</option>
+      </select>
+      <button class="chip" type="button" id="cheap" aria-pressed="false">Under $20</button>
+    </div>
+    <p class="summary" id="summary"></p>
+  </div>
+
+  <main id="tiers"></main>
+
+  <footer class="fine">
+    <p><strong>Paying:</strong> Harvard Dining says all its cafés accept cash, Mastercard, Visa, American Express, and BoardPlus. Several also list the GradPlus declining-balance plan for graduate and professional students, tagged above.</p>
+    <p><strong>Closures:</strong> Most cafés close for Harvard's winter break, academic breaks, and summer; student-run spots (Gato Rojo, Lamont) also close for reading and exam periods. Hours are the academic-year schedule and can change, so check the café's page before a special trip.</p>
+    <p><strong>Local restaurants:</strong> Included if they had a Google Maps rating of 4.0 stars or higher and at least 100 reviews when checked on September 24, 2026. The review minimum screens out new places with only a handful of ratings. Ratings, prices and hours change, so tap a restaurant to check Google Maps before you go. Their walking times are estimates.</p>
+    <p>Source: <a href="https://www.dining.harvard.edu/graduate-professional-dining" target="_blank" rel="noopener">Harvard University Dining Services, Graduate &amp; Professional Dining</a>, pulled September 2026. Walking times are estimates from 79 JFK Street and are not from Harvard Dining or Google. This is an unofficial student guide.</p>
+  </footer>
+</div>
+
+<script>
+const BASE = "https://www.dining.harvard.edu";
+// Hours: per weekday (0=Sun) list of [openMin, closeMin]
+const MTh = (o,c)=>({1:[[o,c]],2:[[o,c]],3:[[o,c]],4:[[o,c]]});
+const wk = (a,b,fri)=>Object.assign(MTh(a,b),{5:[[a,fri]]});
+const h = (hh,mm=0)=>hh*60+mm;
+
+const TIERS = [
+  {id:"here", title:"Steps from HKS", time:"0–5 min", sub:"The HKS Café downstairs, plus the restaurants on JFK, Eliot, Winthrop, Mt Auburn and Brattle Streets."},
+  {id:"yard", title:"Harvard Yard &amp; the Square", time:"5–9 min", sub:"Up JFK Street and across Mass Ave. Includes the only Harvard dinner in the Yard, the late-night library café, and the Square's ramen and ice cream row."},
+  {id:"north", title:"North Yard &amp; toward Central", time:"10–18 min", sub:"Law, Design, Divinity and the science buildings to the north, or down Mass Ave toward Central Square."},
+  {id:"far", title:"Farther out", time:"20+ min", sub:"Allston and Longwood for Harvard cafés; Porter, Central and Inman Squares for restaurants. Best if you're already nearby."}
+];
+
+const SPOTS = [
+  {tier:"here", name:"HKS Café", short:"HKS", where:"Harvard Kennedy School · 19 Eliot St, Cambridge", walk:0, walkTxt:"on site",
+   blurb:"Plant-filled atria and access to JFK Park. Hot breakfast, then pizza, deli, grill, salad bar, international street food and made-to-order ramen and rice bowls.",
+   rows:[["Mon–Thu","7:00am–2:30pm"],["Fri","7:00am–2:00pm"],["Hot breakfast","7:00–10:00am"],["Lunch","11:30am–2:00pm"],["Sat–Sun","Closed"]],
+   hours:wk(h(7),h(14,30),h(14)), bfast:[h(7),h(10)],
+   tags:["breakfast","lunch","plant","gradplus"], note:"3-Star Certified Green Restaurant. Catering for 10–200 people.", url:"/graduate-professional-dining/hks"},
+
+  {tier:"yard", name:"The Commons at Lehman Hall", short:"Commons", where:"Lehman Hall, 1st floor · Harvard Yard", walk:6, walkTxt:"~6 min",
+   blurb:"Built around grad and professional students. Lunch has soups, salads and rice/noodle bowls; dinner rotates global cuisines and comfort food with a salad bar.",
+   rows:[["Mon–Fri lunch","11:30am–2:30pm"],["Mon–Fri dinner","5:00–8:00pm"],["Sat–Sun","Closed"]],
+   hours:Object.fromEntries([1,2,3,4,5].map(d=>[d,[[h(11,30),h(14,30)],[h(17),h(20)]]])),
+   tags:["lunch","dinner","gradplus"], note:"Also sells the Commons Meal Plan. Closed on holiday Mondays.", url:"/graduate-professional-dining/commons-lehman-hall"},
+
+  {tier:"yard", name:"Cafe Gato Rojo", short:"Gato Rojo", where:"Lehman Hall basement · Harvard Yard", walk:6, walkTxt:"~6 min",
+   blurb:"Cozy, student-run coffee spot. Dean's Beans espresso, 22+ Mem Tea loose teas, still or nitro cold brew, pastries and warm cookies.",
+   rows:[["Mon–Fri","8:00am–5:00pm"],["Sat–Sun","Closed"]],
+   hours:Object.fromEntries([1,2,3,4,5].map(d=>[d,[[h(8),h(17)]]])),
+   tags:["coffee","snacks","student"], note:"Closed during breaks, reading period, exams and summer.", url:"/graduate-professional-dining/cafe-gato-rojo"},
+
+  {tier:"yard", name:"Lamont Library Café", short:"Lamont", where:"Lamont Library · 11 Quincy St", walk:9, walkTxt:"~9 min",
+   blurb:"A library with a café. Student baristas pour Peet's, plus sweets, light meals and snacks, with views over the Yard. The latest-open spot on this list.",
+   rows:[["Sun","3:00pm–midnight"],["Mon–Thu","noon–midnight"],["Fri–Sat","Closed"]],
+   hours:{0:[[h(15),h(24)]],1:[[h(12),h(24)]],2:[[h(12),h(24)]],3:[[h(12),h(24)]],4:[[h(12),h(24)]]},
+   tags:["coffee","late","snacks","student"], note:"Closed during breaks, exam period and summer.", url:"/graduate-professional-dining/lamont"},
+
+  {tier:"north", name:"Chauhaus", short:"Chauhaus", where:"Graduate School of Design · 48 Quincy St", walk:12, walkTxt:"~12 min",
+   blurb:"Sunny study-and-meet space. Continental breakfast, then soups and chilis, hot sandwiches, Monsoon Indian Cuisine and grain bowls.",
+   rows:[["Mon–Thu","8:30am–3:00pm"],["Fri","8:30am–2:30pm"],["Breakfast","8:30–11:00am"],["Lunch","11:30am–2:30pm (Fri to 2)"]],
+   hours:wk(h(8,30),h(15),h(14,30)), bfast:[h(8,30),h(11)],
+   tags:["breakfast","lunch","gradplus"], note:"Closed during academic breaks and summer.", url:"/graduate-professional-dining/chauhaus-gsd"},
+
+  {tier:"north", name:"LISE Café", short:"LISE", where:"Lab. of Integrated Science &amp; Engineering · 11 Oxford St", walk:13, walkTxt:"~13 min",
+   blurb:"Light, quick stop in the sunlit LISE entrance. Peet's and pastries in the morning, grab-and-go sandwiches and salads at lunch.",
+   rows:[["Mon–Thu","8:00am–3:30pm"],["Fri","8:00am–3:00pm"],["Sat–Sun","Closed"]],
+   hours:wk(h(8),h(15,30),h(15)), bfast:[h(8),h(11)],
+   tags:["coffee","breakfast","grab"], note:"Grab-and-go focus. Closed for winter break and summer.", url:"/graduate-professional-dining/lise"},
+
+  {tier:"north", name:"HLS Harkness Dining Room &amp; Pub Grill", short:"HLS Harkness", where:"Harvard Law School · 1585 Mass Ave", walk:14, walkTxt:"~14 min",
+   blurb:"Big daytime room with floor-to-ceiling windows and full barista service; the Pub Grill takes over for dinner. Salad bar, deli, grill, pizza, daily entrées.",
+   rows:[["Dining Room Mon–Fri","7:30am–5:00pm"],["Breakfast","7:30–10:30am"],["Lunch","11:30am–2:30pm"],["Pub Grill Mon–Thu","2:30–8:00pm (dinner 5–8)"]],
+   hours:{1:[[h(7,30),h(20)]],2:[[h(7,30),h(20)]],3:[[h(7,30),h(20)]],4:[[h(7,30),h(20)]],5:[[h(7,30),h(17)]]}, bfast:[h(7,30),h(10,30)],
+   tags:["breakfast","lunch","dinner","coffee","halal","gradplus"], note:"Halal and kosher options daily. 3-Star Certified Green Restaurant.", url:"/graduate-professional-dining/hls-harkness-dining-room-pub-grill"},
+
+  {tier:"north", name:"HLS Pub", short:"HLS Pub", where:"Harvard Law School · 1585 Mass Ave", walk:14, walkTxt:"~14 min",
+   blurb:"Evening hangout with nightly programming: $.99 wings Monday, music bingo Tuesday, trivia Wednesday (the most popular night), wild card Thursday.",
+   rows:[["Mon–Thu","5:00–9:30pm"],["Last call","9:00pm"],["Fri–Sun","Closed"]],
+   hours:MTh(h(17),h(21,30)),
+   tags:["dinner","late","social"], note:"Table reservations with advance notice. Closed during breaks, reading/exam periods and summer.", url:"/undergraduate-dining/hls-pub"},
+
+  {tier:"north", name:"Northwest Café", short:"Northwest", where:"Northwest Building · 52 Oxford St", walk:17, walkTxt:"~17 min",
+   blurb:"Sun-drenched with indoor and outdoor seating, next to the Museum of Natural History. Hot entrée of the day, grill, made-to-order sandwiches and paninis.",
+   rows:[["Mon–Thu","8:00am–3:00pm"],["Fri","8:00am–2:30pm"],["Breakfast","8:00–10:30am"],["Lunch","11:30am–2:30pm"]],
+   hours:wk(h(8),h(15),h(14,30)), bfast:[h(8),h(10,30)],
+   tags:["breakfast","lunch","coffee","gradplus"], note:"Costa Coffee machine available 24/7.", url:"/graduate-professional-dining/northwest"},
+
+  {tier:"north", name:"HDS Commons", short:"HDS", where:"Swartz Hall, Divinity School · 45 Francis Ave", walk:18, walkTxt:"~18 min",
+   blurb:"Newly built Swartz Hall with soft seating for studying. Full breakfast, then pub-style grill and global bowls: burritos, mezze, Caribbean.",
+   rows:[["Mon–Thu","8:00am–2:30pm"],["Fri","8:00am–2:00pm"],["Breakfast","8:00–10:00am"],["Lunch","11:30am to 30 min before close"]],
+   hours:wk(h(8),h(14,30),h(14)), bfast:[h(8),h(10)],
+   tags:["breakfast","lunch","plant","gradplus"], note:"Certified Green Restaurant. Closed during academic breaks and summer.", url:"/graduate-professional-dining/hds-commons"},
+
+  {tier:"far", name:"SEC Café", short:"SEC", where:"Science &amp; Engineering Complex · 150 Western Ave, Allston", walk:22, walkTxt:"~22 min",
+   blurb:"Bright spot just west of the SEC atrium. Breakfast bowls and sandwiches, then global entrées, quinoa craft bowls, grill and pizza.",
+   rows:[["Mon–Fri","8:00am–2:30pm"],["Sat–Sun","Closed"]],
+   hours:Object.fromEntries([1,2,3,4,5].map(d=>[d,[[h(8),h(14,30)]]])), bfast:[h(8),h(11)],
+   tags:["breakfast","lunch","gradplus"], note:"4-Star Certified Green Restaurant. Walk crosses the Anderson Memorial Bridge.", url:"/graduate-professional-dining/sec"},
+
+  {tier:"far", name:"Sebastian's Café", short:"Sebastian's", where:"Kresge Building · 677 Huntington Ave, Boston", walk:40, walkTxt:"~40 min transit",
+   blurb:"Longwood campus break spot with indoor and outdoor seating. Oatmeal and pastries in the morning, custom grain bowls, salads and pizza at lunch.",
+   rows:[["Mon–Fri","7:30am–2:30pm"],["Breakfast","8:00–10:00am"],["Lunch","11:30am–2:00pm"]],
+   hours:Object.fromEntries([1,2,3,4,5].map(d=>[d,[[h(7,30),h(14,30)]]])), bfast:[h(8),h(10)],
+   tags:["breakfast","lunch","gradplus"], note:"3-Star Certified Green Restaurant. Not walkable from HKS.", url:"/graduate-professional-dining/sebastians"}
+];
+
+// Local restaurants: Google Maps rating snapshot, Sept 24 2026. Rule: 4.0+ stars and 100+ reviews.
+// [name, rating, reviews, price, category, address, walkMin, tier, cuisineKey]
+const EATS = [
+  ["Henrietta's Table",4.3,939,"$20–80","American, farm-to-table","1 Bennett St (Charles Hotel)",2,"here","american"],
+  ["Too Hot",4.7,268,"$30–60","Chinese","16-18 Eliot St",2,"here","asian"],
+  ["Gyu-Kaku Japanese BBQ",4.6,2209,"$30–70","Japanese BBQ","16-18 Eliot St, 2nd fl",2,"here","asian"],
+  ["Madras Dosa Company",4.1,321,"$10–20","South Indian","22 Eliot St",2,"here","indian"],
+  ["The Maharaja",4.2,2229,"$20–50","Indian","57 JFK St",2,"here","indian"],
+  ["Grafton Street Pub & Grill",4.3,1506,"$10–50","American pub","59 JFK St",2,"here","american"],
+  ["Shay's Pub & Wine Bar",4.5,574,"$10–20","Pub","58 JFK St",2,"here","american"],
+  ["Nine Tastes",4.0,545,"$10–20","Thai","50 JFK St",2,"here","asian"],
+  ["Amorino Gelato",4.5,812,"","Gelato","50 JFK St",2,"here","sweets"],
+  ["Grendel's Den",4.1,1329,"$20–30","Bar & restaurant","89 Winthrop St",2,"here","american"],
+  ["Shake Shack",4.3,2181,"","Burgers","92 Winthrop St",2,"here","american"],
+  ["Life Alive Organic Cafe",4.4,263,"$10–20","Healthy bowls, vegetarian","22 JFK St",3,"here","healthy"],
+  ["Achilito's Taqueria",4.6,940,"$10–20","Mexican","84 Winthrop St",3,"here","mexican"],
+  ["Pinocchio's Pizza & Subs",4.5,2023,"","Pizza & subs","74 Winthrop St",3,"here","pizza"],
+  ["Flour Bakery + Cafe",4.5,1073,"$10–20","Bakery & sandwiches","114 Mt Auburn St",3,"here","cafe"],
+  ["Wusong Road Tiki Bar",4.8,2939,"$30–70","Tiki bar","112 Mt Auburn St",3,"here","asian"],
+  ["Dig Inn",4.3,387,"","Market bowls","82 Mt Auburn St",4,"here","healthy"],
+  ["Luxor Cafe",4.6,472,"","Café, Middle Eastern–inspired","148 Mt Auburn St",4,"here","cafe"],
+  ["Daily Provisions",4.3,140,"$10–20","Café & sandwiches","1 Brattle Sq",4,"here","cafe"],
+  ["Van Leeuwen Ice Cream",4.7,338,"","Ice cream","1 Brattle Sq",4,"here","sweets"],
+  ["Felipe's Taqueria",4.4,4242,"$10–20","Mexican","21 Brattle St",5,"here","mexican"],
+  ["El Jefe's Taqueria",4.6,2893,"","Mexican","14 Brattle St",5,"here","mexican"],
+  ["Joe's Pizza",4.4,745,"$1–10","NY-style pizza by the slice","3 Brattle St",5,"here","pizza"],
+  ["CAVA",4.6,898,"$10–20","Mediterranean bowls","22 Brattle St",5,"here","healthy"],
+  ["Bluestone Lane",4.0,619,"$10–20","Café & brunch","27 Brattle St",5,"here","cafe"],
+  ["Waku Waku Ramen",4.5,523,"$20–30","Ramen","33 Brattle St",5,"here","asian"],
+  ["Alden & Harlow",4.4,2469,"$20–60","New American","40 Brattle St",5,"here","american"],
+
+  ["Bosso Ramen Tavern",4.6,1004,"$20–30","Ramen & izakaya","24 Holyoke St",5,"yard","asian"],
+  ["Saloniki Greek",4.3,690,"$10–20","Greek","24 Dunster St",5,"yard","healthy"],
+  ["Oggi Gourmet",4.6,156,"$10–20","Pizza & sandwiches","30 Dunster St",5,"yard","pizza"],
+  ["Toscano",4.4,1005,"$30–70","Italian","52 Brattle St",6,"yard","american"],
+  ["Tatte Bakery & Cafe",4.4,2949,"$10–20","Bakery café & brunch","1288 Mass Ave",6,"yard","cafe"],
+  ["Lizzy's Ice Cream",4.6,331,"","Ice cream","29 Church St",6,"yard","sweets"],
+  ["The Painted Burro",4.0,156,"$20–30","Mexican","32 Church St",6,"yard","mexican"],
+  ["J.P. Licks",4.4,892,"","Ice cream","1312 Mass Ave",6,"yard","sweets"],
+  ["Blank Street",4.6,535,"$1–10","Coffee","1380 Mass Ave",6,"yard","cafe"],
+  ["Le Macaron",4.1,133,"","French pastries","1374 Mass Ave",6,"yard","sweets"],
+  ["Hokkaido Santouka Ramen",4.5,3025,"$20–30","Ramen","1 Bow St",7,"yard","asian"],
+  ["Mr. Bartley's Burger Cottage",4.4,1422,"","Burgers","1246 Mass Ave",7,"yard","american"],
+  ["The Friendly Toast",4.1,329,"$10–20","Breakfast & brunch","1230 Mass Ave",8,"yard","cafe"],
+
+  ["Boston Burger Company",4.3,1851,"$20–30","Burgers","1105 Mass Ave",10,"north","american"],
+  ["Cafe Sushi",4.6,1040,"","Sushi","1105 Mass Ave",10,"north","asian"],
+  ["Chef Zhang Cuisine & Bar",4.5,290,"$20–30","Chinese","1105 Mass Ave",10,"north","asian"],
+  ["Pai Kin Kao",4.4,445,"$10–30","Thai","80 River St",12,"north","asian"],
+  ["Singh's Dhaba",4.5,517,"$20–30","Punjabi","1001 Mass Ave",13,"north","indian"],
+  ["Sushi Kingdom",4.4,179,"$30–40","Sushi","1001 Mass Ave",13,"north","asian"],
+  ["Jamie's Ice Cream Co.",4.7,141,"","Ice cream","88 Kirkland St",15,"north","sweets"],
+
+  ["Ramen O' Bowl",4.6,213,"$10–20","Ramen","1668 Mass Ave",22,"far","asian"],
+  ["Koreana",4.2,1635,"$20–30","Korean","158 Prospect St",25,"far","asian"],
+  ["Pita Cambridge",4.5,521,"","Mediterranean","12 Springfield St",25,"far","healthy"],
+  ["Yume Wo Katare",4.5,1380,"","Ramen","1923 Mass Ave (Porter Sq)",30,"far","asian"],
+  ["Sugar & Spice",4.3,1324,"$20–30","Thai","1933 Mass Ave (Porter Sq)",30,"far","asian"]
+].map(r=>({name:r[0],rating:r[1],reviews:r[2],price:r[3],cat:r[4],addr:r[5],walk:r[6],tier:r[7],cuisine:r[8]}));
+const CUISINES = {all:"All cuisines",american:"American, burgers & pubs",pizza:"Pizza",mexican:"Mexican",asian:"Asian",indian:"Indian",healthy:"Bowls & Mediterranean",cafe:"Cafés & brunch",sweets:"Ice cream & sweets"};
+const cheapPrice = p => /^\$1–(10|20)$|^\$10–20$/.test(p);
+
+const TAGLABEL ={breakfast:"Breakfast",lunch:"Lunch",dinner:"Dinner",coffee:"Coffee bar",late:"Late night",snacks:"Snacks",grab:"Grab-and-go",plant:"Plant-based options",halal:"Halal & kosher",gradplus:"GradPlus",student:"Student-run",social:"Trivia & events"};
+
+const filters = new Set();
+let src="all", cheapOnly=false;
+const $cuisine=document.getElementById("cuisine"), $minr=document.getElementById("minrating");
+$cuisine.innerHTML=Object.entries(CUISINES).map(([k,v])=>`<option value="${k}">${v}</option>`).join("");
+const gmaps = e => "https://www.google.com/maps/search/?api=1&query="+encodeURIComponent(e.name+" "+e.addr.replace(/\s*\(.*\)/,"")+" Cambridge MA");
+function eatPasses(e){
+  if($cuisine.value!=="all" && e.cuisine!==$cuisine.value) return false;
+  if(e.rating < +$minr.value) return false;
+  if(cheapOnly && !cheapPrice(e.price)) return false;
+  return true;
+}
+const $day = document.getElementById("day"), $time = document.getElementById("time");
+
+function nowBoston(){
+  try{
+    const p = new Intl.DateTimeFormat("en-US",{timeZone:"America/New_York",weekday:"short",hour:"2-digit",minute:"2-digit",hour12:false}).formatToParts(new Date());
+    const g = t=>p.find(x=>x.type===t).value;
+    const d = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"].indexOf(g("weekday"));
+    let hh = +g("hour"); if(hh===24) hh=0;
+    return {d, m: hh*60 + +g("minute")};
+  }catch(e){ const n=new Date(); return {d:n.getDay(), m:n.getHours()*60+n.getMinutes()}; }
+}
+function setNow(){ const n=nowBoston(); $day.value=String(n.d); $time.value=String(Math.floor(n.m/60)).padStart(2,"0")+":"+String(n.m%60).padStart(2,"0"); }
+function fmt(m){ if(m>=1440) return "midnight"; const hh=Math.floor(m/60), mm=m%60, ap=hh>=12?"pm":"am", h12=((hh+11)%12)+1; return h12+(mm?":"+String(mm).padStart(2,"0"):"")+ap; }
+
+function status(s, d, m){
+  const today = s.hours[d]||[];
+  for(const [o,c] of today){
+    if(m>=o && m<c) return c-m<=30 ? {cls:"soon",txt:"Closes "+fmt(c)} : {cls:"open",txt:"Open until "+fmt(c)};
+  }
+  const later = today.find(([o])=>o>m);
+  if(later) return {cls:"closed",txt: (later[0]-m<=60?"Opens soon, ":"Opens ")+fmt(later[0])};
+  for(let i=1;i<=7;i++){ const nd=(d+i)%7; if(s.hours[nd]&&s.hours[nd].length){ return {cls:"closed",txt:"Closed · opens "+["Sun","Mon","Tue","Wed","Thu","Fri","Sat"][nd]+" "+fmt(s.hours[nd][0][0])}; } }
+  return {cls:"closed",txt:"Closed"};
+}
+
+function passes(s, st){
+  for(const f of filters){
+    if(f==="open" && st.cls==="closed") return false;
+    if(f==="breakfast" && !s.tags.includes("breakfast")) return false;
+    if(f==="dinner" && !(s.tags.includes("dinner")||s.tags.includes("late"))) return false;
+    if(f==="coffee" && !s.tags.includes("coffee")) return false;
+    if(f==="gradplus" && !s.tags.includes("gradplus")) return false;
+  }
+  return true;
+}
+
+function render(){
+  const d=+$day.value, [hh,mm]=($time.value||"12:00").split(":").map(Number), m=hh*60+mm;
+  let shown=0, openCount=0, eatShown=0;
+  const out = TIERS.map(t=>{
+    const cards = SPOTS.filter(s=>s.tier===t.id).map(s=>{
+      const st=status(s,d,m); if(st.cls!=="closed") openCount++;
+      if(src==="eats" || !passes(s,st)) return "";
+      shown++;
+      return `<article class="card">
+        <div class="card-top"><div><h3>${s.name}</h3><p class="where">${s.where}</p></div><span class="walk">${s.walkTxt}</span></div>
+        <span class="status ${st.cls}">${st.txt}</span>
+        <p class="blurb">${s.blurb}</p>
+        <table class="hours"><tbody>${s.rows.map(r=>`<tr><td>${r[0]}</td><td>${r[1]}</td></tr>`).join("")}</tbody></table>
+        <div class="tags">${s.tags.map(k=>`<span class="tag${k==="gradplus"?" gp":""}">${TAGLABEL[k]}</span>`).join("")}</div>
+        <p class="note">${s.note}</p>
+        <div class="card-foot"><a href="${BASE+s.url}" target="_blank" rel="noopener">Menu &amp; details on Harvard Dining ↗</a></div>
+      </article>`;
+    }).join("");
+    const eats = src==="huds" ? [] : EATS.filter(e=>e.tier===t.id && eatPasses(e)).sort((a,b)=>a.walk-b.walk||b.rating-a.rating);
+    eatShown += eats.length;
+    const eatHtml = eats.length ? `<div class="eats-head"><h3>Local restaurants · ${eats.length}</h3><span>Google rating (reviews) · tap for Maps</span></div>
+      <div class="eats">${eats.map(e=>`<a class="eat" href="${gmaps(e)}" target="_blank" rel="noopener">
+        <span class="eat-name">${e.name}</span>
+        <span class="eat-right"><span class="stars">★ ${e.rating.toFixed(1)}</span><span class="revs">${e.reviews.toLocaleString("en-US")} reviews</span><span class="eat-walk">~${e.walk} min</span></span>
+        <span class="eat-meta">${e.cat}${e.price?" · "+e.price:""} · ${e.addr}</span>
+      </a>`).join("")}</div>` : "";
+    const hudsHead = cards && src==="all" ? `<div class="eats-head"><h3>Harvard Dining cafés</h3></div>` : "";
+    const body = (cards?hudsHead+`<div class="grid">${cards}</div>`:"") + eatHtml;
+    return `<section class="tier" id="${t.id}">
+      <div class="tier-head"><span class="tier-time">${t.time}</span><h2>${t.title}</h2><p class="tier-sub">${t.sub}</p></div>
+      ${body || `<p class="empty">Nothing here matches your filters.</p>`}
+    </section>`;
+  }).join("");
+  document.getElementById("tiers").innerHTML = out;
+  const dayName=$day.options[$day.selectedIndex].text;
+  document.getElementById("summary").textContent = `${openCount} of ${SPOTS.length} Harvard cafés serving ${dayName} at ${fmt(m)} · showing ${shown} cafés and ${eatShown} restaurants`;
+  drawScale(d,m);
+}
+
+function drawScale(d,m){
+  const svg=document.getElementById("scale"), W=900, L=30, R=860, max=25;
+  const x=v=>L+(Math.min(v,max)/max)*(R-L);
+  const bands=[["In the building",0,1.5,"var(--brick)"],["Harvard Yard",4,10,"var(--river)"],["North Yard",11,19,"var(--river)"],["Beyond",20,25,"var(--muted)"]];
+  let s=`<line class="axis" x1="${L}" x2="${R}" y1="112" y2="112" stroke-width="2"/>`;
+  bands.forEach(([n,a,b,c])=>{ s+=`<rect x="${x(a)}" y="108" width="${Math.max(x(b)-x(a),6)}" height="8" rx="4" fill="${c}" opacity=".25"/><text class="band" x="${a===0?L-4:(x(a)+x(b))/2}" y="140" text-anchor="${a===0?"start":"middle"}" fill="${c}">${n}</text>`; });
+  [0,5,10,15,20,25].forEach(t=>{ s+=`<line class="axis" x1="${x(t)}" x2="${x(t)}" y1="112" y2="118"/><text class="tick" x="${x(t)}" y="130" text-anchor="middle">${t===25?"25+ min":t}</text>`; });
+  // stack labels to avoid overlap
+  const lanes=[]; const sorted=[...SPOTS].sort((a,b)=>a.walk-b.walk);
+  sorted.forEach(sp=>{
+    const px=x(sp.walk), w=sp.short.length*6.6+14, end=px>760; let lane=0;
+    const start=end?px-w:px;
+    while(lanes[lane]!==undefined && lanes[lane]>start-4) lane++;
+    lanes[lane]=start+w;
+    const y=96-lane*20, st=status(sp,d,m), dot=st.cls==="closed"?"var(--closed)":"var(--open)";
+    s+=`<line x1="${px}" x2="${px}" y1="${y+4}" y2="110" stroke="var(--line)"/><circle cx="${px}" cy="112" r="5" fill="${dot}" stroke="var(--surface)" stroke-width="2"/><text class="lbl" x="${end?px-4:px+4}" y="${y}" text-anchor="${end?"end":"start"}">${sp.short}${sp.walk>max?" →":""}</text>`;
+  });
+  s+=`<circle cx="${W-150}" cy="14" r="5" fill="var(--open)"/><text class="tick" x="${W-140}" y="18">open</text><circle cx="${W-90}" cy="14" r="5" fill="var(--closed)"/><text class="tick" x="${W-80}" y="18">closed</text>`;
+  svg.innerHTML=s;
+}
+
+document.getElementById("chips").addEventListener("click",e=>{
+  const b=e.target.closest(".chip"); if(!b) return;
+  const f=b.dataset.f; filters.has(f)?filters.delete(f):filters.add(f);
+  b.setAttribute("aria-pressed",filters.has(f)); render();
+});
+document.querySelector(".seg").addEventListener("click",e=>{
+  const b=e.target.closest("button"); if(!b) return; src=b.dataset.src;
+  document.querySelectorAll(".seg button").forEach(x=>x.setAttribute("aria-pressed",x===b)); render();
+});
+document.getElementById("cheap").addEventListener("click",e=>{cheapOnly=!cheapOnly;e.currentTarget.setAttribute("aria-pressed",cheapOnly);render();});
+$cuisine.addEventListener("change",render); $minr.addEventListener("change",render);
+$day.addEventListener("change",render); $time.addEventListener("change",render);
+document.getElementById("now").addEventListener("click",()=>{setNow();render();});
+setNow(); render();
+</script>
+</body>
+</html>
